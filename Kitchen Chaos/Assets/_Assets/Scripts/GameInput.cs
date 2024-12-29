@@ -8,13 +8,22 @@ public class GameInput : MonoBehaviour
 {
     private NewControls inputActions;
     public event EventHandler OnInteractPeformed;
+    public event EventHandler OnInteractAltPerformed;
 
     private void Awake()
     {
+        //SetUp Controls
         inputActions = new NewControls();
         inputActions.Player.Enable();
 
+        //Subscribe to Control Events
         inputActions.Player.Interact.performed += Interact_Performed;
+        inputActions.Player.InteractAlt.performed += InteractAlt_performed;
+    }
+
+    private void InteractAlt_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
+    {
+        OnInteractAltPerformed?.Invoke(this, EventArgs.Empty);
     }
 
     private void Interact_Performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)

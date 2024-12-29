@@ -53,7 +53,10 @@ public class Player : MonoBehaviour, IKitchenObjectParent
     void Start()
     {
         gameInput.OnInteractPeformed += GameInput_OnInteractPeformed;
+        gameInput.OnInteractAltPerformed += GameInput_OnInteractAltPerformed;
     }
+
+    
 
     // Update is called once per frame
     private void Update()
@@ -81,6 +84,14 @@ public class Player : MonoBehaviour, IKitchenObjectParent
         if (selectedCounter != null) 
         {
             selectedCounter. Interact(this);
+        }
+    }
+
+    private void GameInput_OnInteractAltPerformed(object sender, EventArgs e)
+    {
+        if (selectedCounter != null)
+        {
+            selectedCounter.InteractAlternate(this);
         }
     }
 
@@ -137,7 +148,7 @@ public class Player : MonoBehaviour, IKitchenObjectParent
             //Cannot Move towards moveDir
             //Attempt only X movement
             Vector3 moveDirX = new Vector3(moveDir.x, 0f, 0f).normalized;
-            canMove = !Physics.CapsuleCast(transform.position, transform.position + Vector3.up * playerHeight, playerSize, moveDirX, moveDist);
+            canMove = moveDir.x! != 0 && !Physics.CapsuleCast(transform.position, transform.position + Vector3.up * playerHeight, playerSize, moveDirX, moveDist);
             if (canMove)
             {
                 //Can move only on the x
@@ -147,7 +158,7 @@ public class Player : MonoBehaviour, IKitchenObjectParent
             {
                 //Attempt only Z movement
                 Vector3 moveDirZ = new Vector3(0f, 0f, moveDir.z).normalized;
-                canMove = !Physics.CapsuleCast(transform.position, transform.position + Vector3.up * playerHeight, playerSize, moveDirZ, moveDist);
+                canMove = moveDirZ.z != 0 && !Physics.CapsuleCast(transform.position, transform.position + Vector3.up * playerHeight, playerSize, moveDirZ, moveDist);
 
                 if (canMove)
                 {
