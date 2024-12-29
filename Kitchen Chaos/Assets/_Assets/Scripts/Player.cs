@@ -15,7 +15,7 @@ public class Player : MonoBehaviour, IKitchenObjectParent
     public event EventHandler<OnSelectedCounterChangedEventArgs> OnSelectedCounterChanged;
     public class OnSelectedCounterChangedEventArgs : EventArgs 
     {
-        public ClearCounter SelectedCounter;
+        public BaseCounter SelectedCounter;
     }
 
     [SerializeField] private float MoveSpeed = 2f;
@@ -25,7 +25,7 @@ public class Player : MonoBehaviour, IKitchenObjectParent
     private KitchenObject kitchenObject;
     private bool isWalking;
     private Vector3 lastInteractDir;
-    private ClearCounter selectedCounter;
+    private BaseCounter selectedCounter;
 
     #endregion
 
@@ -80,7 +80,7 @@ public class Player : MonoBehaviour, IKitchenObjectParent
     {
         if (selectedCounter != null) 
         {
-            selectedCounter.Interact(this);
+            selectedCounter. Interact(this);
         }
     }
 
@@ -100,12 +100,12 @@ public class Player : MonoBehaviour, IKitchenObjectParent
         if (Physics.Raycast(transform.position, moveDir, out hit, interactDistance, counterLayerMask))
         {
             //Check if RayCast hit is a clear counter
-            if (hit.transform.TryGetComponent(out ClearCounter clearCounter))
+            if (hit.transform.TryGetComponent(out BaseCounter baseCounter))
             {
                 //Has Clear Counter
-                if (clearCounter != selectedCounter)
+                if (baseCounter != selectedCounter)
                 {
-                    SetSelectedCounter(clearCounter);
+                    SetSelectedCounter(baseCounter);
                 }
             }
             else 
@@ -170,7 +170,7 @@ public class Player : MonoBehaviour, IKitchenObjectParent
         transform.forward = Vector3.Slerp(transform.forward, moveDir, rotateSpeed * Time.deltaTime);
     }
 
-    private void SetSelectedCounter(ClearCounter selectedCounter) 
+    private void SetSelectedCounter(BaseCounter selectedCounter) 
     {
         this.selectedCounter = selectedCounter;
         OnSelectedCounterChanged?.Invoke(this, new OnSelectedCounterChangedEventArgs { SelectedCounter = selectedCounter }); 
