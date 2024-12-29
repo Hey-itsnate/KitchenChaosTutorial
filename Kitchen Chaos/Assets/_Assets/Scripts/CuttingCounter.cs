@@ -7,7 +7,7 @@ using UnityEngine.InputSystem.iOS;
 public class CuttingCounter : BaseCounter
 {
     #region Fields
-    [SerializeField] private KitchenObjectSO cutKitchenObjectSO;
+    [SerializeField] private CuttingRecipeSO[] cuttingRecipesSO;
 
     #endregion
 
@@ -21,7 +21,12 @@ public class CuttingCounter : BaseCounter
             if (player.HasKitchObject())
             {
                 //Player Is carrying something
-                player.GetKitchenObject().SetKitchenObjectParent(this);
+                if (HasCuttingRecipe(player.GetKitchenObject().GetKitchenObjectSO())) 
+                {
+                    //Player is holding a cuttable kitchen object
+                    player.GetKitchenObject().SetKitchenObjectParent(this);
+                }
+                
             }
         }
         else
@@ -39,16 +44,40 @@ public class CuttingCounter : BaseCounter
         }
     }
 
+    private bool HasCuttingRecipe(KitchenObjectSO inputKitchenObjectSO) 
+    {
+        foreach (CuttingRecipeSO cuttingRecipe in cuttingRecipesSO)
+        {
+            if (cuttingRecipe.input == inputKitchenObjectSO)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public override void InteractAlternate(Player player)
     {
-        if (HasKitchObject()) 
+        if (HasKitchObject() && HasCuttingRecipe(GetKitchenObject().GetKitchenObjectSO())) 
         {
-            Debug.Log("Cutting");
-            //There is a kitcheObect Here
+            //There is a kitcheObect Here AND it can be cut.
+            KitchenObjectSO outputKitchenObjectSO = GetOutputForInput(GetKitchenObject().GetKitchenObjectSO());
             GetKitchenObject().DestroySelf();
 
-            KitchenObject.SpawnKitchenObject(cutKitchenObjectSO, this);
+            KitchenObject.SpawnKitchenObject(outputKitchenObjectSO, this);
         }
+    }
+
+    private KitchenObjectSO GetOutputForInput(KitchenObjectSO inputKitchenObjectSO)
+    {
+        foreach (CuttingRecipeSO cuttingRecipe in cuttingRecipesSO) 
+        {
+            if (cuttingRecipe.input == inputKitchenObjectSO) 
+            {
+                return cuttingRecipe.output;
+            }
+        }
+        return null;
     }
 
     #endregion
