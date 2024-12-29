@@ -22,7 +22,7 @@ public class BaseCounter : MonoBehaviour, IKitchenObjectParent
 
     public KitchenObject GetKitchenObject()
     {
-        throw new System.NotImplementedException();
+        return kitchenObject;
     }
 
     public Transform GetKitchenObjectFollowTransform()
