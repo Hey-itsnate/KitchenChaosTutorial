@@ -5,14 +5,11 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem.iOS;
 
-public class CuttingCounter : BaseCounter
+public class CuttingCounter : BaseCounter, IHasProgress
 {
     #region Fields
-    public event EventHandler<OnCuttingProgressChangedEventArgs> OnCuttingProgressChanged;
-    public class OnCuttingProgressChangedEventArgs : EventArgs 
-    {
-        public float progressNormalized;
-    }
+    public event EventHandler<IHasProgress.OnProgressChangedEventArgs> OnProgressChanged;
+
     public event EventHandler OnCut;
 
     [SerializeField] private CuttingRecipeSO[] cuttingRecipesSO;
@@ -38,7 +35,7 @@ public class CuttingCounter : BaseCounter
 
                     //Get The cutting recipe for the kitchen object and invoke the OnCuttingProgressChanged Event w/ cuttingProgress = 0.
                     CuttingRecipeSO cuttingRecipeSO = GetCuttingRecipeSOWithInput(GetKitchenObject().GetKitchenObjectSO());
-                    OnCuttingProgressChanged?.Invoke(this, new OnCuttingProgressChangedEventArgs { progressNormalized =  (float) cuttingProgress/cuttingRecipeSO.cuttingProgressMax}) ;
+                    OnProgressChanged?.Invoke(this, new IHasProgress.OnProgressChangedEventArgs { progressNormalized =  (float) cuttingProgress/cuttingRecipeSO.cuttingProgressMax}) ;
                 }
                 
             }
@@ -81,7 +78,7 @@ public class CuttingCounter : BaseCounter
 
             //Invoke Cutting Progress Event.
             OnCut.Invoke(this, EventArgs.Empty);
-            OnCuttingProgressChanged?.Invoke(this, new OnCuttingProgressChangedEventArgs { progressNormalized = (float)cuttingProgress / cuttingRecipeSO.cuttingProgressMax });
+            OnProgressChanged?.Invoke(this, new IHasProgress.OnProgressChangedEventArgs { progressNormalized = (float)cuttingProgress / cuttingRecipeSO.cuttingProgressMax });
         }
     }
 
