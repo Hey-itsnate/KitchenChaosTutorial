@@ -313,7 +313,7 @@ GameObject:
   - component: {fileID: 65235900}
   m_Layer: 0
   m_Name: Virtual Camera
-  m_TagString: Untagged
+  m_TagString: MainCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1600,6 +1600,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: CuttingCounter
       objectReference: {fileID: 0}
+    - target: {fileID: 3216973469683005685, guid: 003952f588a0f9544b687f4a447a2694,
+        type: 3}
+      propertyPath: lookMode
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 2943061354850389590, guid: 003952f588a0f9544b687f4a447a2694, type: 3}
     m_RemovedGameObjects: []
@@ -1796,6 +1801,11 @@ PrefabInstance:
     - target: {fileID: 8004961927050831425, guid: 69cb890bbe0452143bb8a3f98e702a07,
         type: 3}
       propertyPath: m_Name
+      value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 8004961927050831425, guid: 69cb890bbe0452143bb8a3f98e702a07,
+        type: 3}
+      propertyPath: m_TagString
       value: Player
       objectReference: {fileID: 0}
     m_RemovedComponents: []
