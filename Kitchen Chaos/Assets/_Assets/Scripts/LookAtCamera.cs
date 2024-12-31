@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-public class LootAtCamera : MonoBehaviour
+public class LookAtCamera : MonoBehaviour
 {
     private enum LookMode { LookAt, LookAtInverted,CameraFoward, CameraForwardInverted}
 
