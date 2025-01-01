@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
@@ -5,6 +6,8 @@ using UnityEngine;
 
 public class DeliveryManager : MonoBehaviour
 {
+    public event EventHandler OnRecipeSpawned;
+    public event EventHandler OnRecipeCompleted;
     public static DeliveryManager Instance { get; private set; }
     [SerializeField] private RecipeListSO recipeListSO;
     private List<RecipeSO> waitingRecipeSOList;
@@ -27,10 +30,15 @@ public class DeliveryManager : MonoBehaviour
             //Recipte Timer Finisehd
             spawnRecipeTimer = spawnRecipeTimerDuration;
 
-            //Add New Recipe to waitingRecipeSO List
-            RecipeSO waitingRecipe = recipeListSO.RecipteSOList[Random.Range(0, recipeListSO.RecipteSOList.Count)];
-            Debug.Log("New Recipe: " + waitingRecipe.name);
-            waitingRecipeSOList.Add(waitingRecipe);
+            if (waitingRecipeSOList.Count < waitingRecipesMax)
+            {
+                //Add New Recipe to waitingRecipeSO List
+                RecipeSO waitingRecipe = recipeListSO.RecipteSOList[UnityEngine.Random.Range(0, recipeListSO.RecipteSOList.Count)];
+                //Debug.Log("New Recipe: " + waitingRecipe.name);
+                waitingRecipeSOList.Add(waitingRecipe);
+
+                OnRecipeSpawned?.Invoke(this, EventArgs.Empty);
+            }
         }
     }
 
@@ -60,6 +68,7 @@ public class DeliveryManager : MonoBehaviour
                     if (!found) 
                     {
                         //Ingredients don't match
+                        
                         plateMathcesRecipe = false;
                     }
                 }
@@ -69,6 +78,8 @@ public class DeliveryManager : MonoBehaviour
                     //Player delievered valid recipe
                     Debug.Log("Player delivered the correct Recipe");
                     waitingRecipeSOList.RemoveAt(i);
+
+                    OnRecipeCompleted?.Invoke(this, EventArgs.Empty);
                     return;
                 }
             }
@@ -77,5 +88,7 @@ public class DeliveryManager : MonoBehaviour
         //Player didn't deliver right recipe
         Debug.Log("Invalid recipe!");
     }
+
+    public List<RecipeSO> GetRecipeListSOs() { return waitingRecipeSOList; }
 
 }
