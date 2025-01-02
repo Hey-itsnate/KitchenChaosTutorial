@@ -15,4 +15,4 @@ MonoBehaviour:
   Ingredients:
   - {fileID: 11400000, guid: e210b37f124c09e4cb36645c3d9beb55, type: 2}
   - {fileID: 11400000, guid: 24851d4bc66a75744ad53aa1c6dbd661, type: 2}
-  RecipeName: Mega Burger
+  RecipeName: Salad

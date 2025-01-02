@@ -14,5 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Ingredients:
   - {fileID: 11400000, guid: 9099f158d314f644bbb7e7fd2d8ba943, type: 2}
+  - {fileID: 11400000, guid: 2c2e37e720354e24fb629f952f1d0b1d, type: 2}
   - {fileID: 11400000, guid: 27849ad816898754f9698cf3f304a315, type: 2}
   RecipeName: Cheeseburger
