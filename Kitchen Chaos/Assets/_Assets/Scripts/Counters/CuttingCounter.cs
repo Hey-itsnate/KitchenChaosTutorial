@@ -8,6 +8,7 @@ using UnityEngine.InputSystem.iOS;
 public class CuttingCounter : BaseCounter, IHasProgress
 {
     #region Fields
+    public static event EventHandler OnAnyCut;
     public event EventHandler<IHasProgress.OnProgressChangedEventArgs> OnProgressChanged;
 
     public event EventHandler OnCut;
@@ -84,6 +85,7 @@ public class CuttingCounter : BaseCounter, IHasProgress
 
             //Invoke Cutting Progress Event.
             OnCut.Invoke(this, EventArgs.Empty);
+            OnAnyCut(this, EventArgs.Empty);
             OnProgressChanged?.Invoke(this, new IHasProgress.OnProgressChangedEventArgs { progressNormalized = (float)cuttingProgress / cuttingRecipeSO.cuttingProgressMax });
         }
     }
