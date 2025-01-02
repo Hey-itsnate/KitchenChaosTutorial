@@ -8,6 +8,8 @@ public class DeliveryManagerUI : MonoBehaviour
     [SerializeField] private Transform container;
     [SerializeField] private Transform recipeTemplate;
 
+    #region Methods
+
     private void Start()
     {
         DeliveryManager.Instance.OnRecipeCompleted += Instance_OnRecipeCompleted;
@@ -20,7 +22,6 @@ public class DeliveryManagerUI : MonoBehaviour
         recipeTemplate.gameObject.SetActive(false);
     }
 
-
     private void Instance_OnRecipeSpawned(object sender, System.EventArgs e)
     {
         UpdateVisuals();
@@ -30,7 +31,6 @@ public class DeliveryManagerUI : MonoBehaviour
     {
         UpdateVisuals();
     }
-
 
     private void UpdateVisuals()
     {
@@ -46,9 +46,9 @@ public class DeliveryManagerUI : MonoBehaviour
             template.gameObject.SetActive(true);
             template.GetComponent<DeliveryManagerSingleUI>().SetRecipeSO(recipeSO);
         }
-
     }
 
+    #endregion
 }
 
 
