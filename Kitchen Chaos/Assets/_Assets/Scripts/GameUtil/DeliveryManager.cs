@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using UnityEngine;
 
@@ -18,6 +19,7 @@ public class DeliveryManager : MonoBehaviour
     private float spawnRecipeTimer;
     private float spawnRecipeTimerDuration = 4f;
     private int waitingRecipesMax = 4;
+    private int successfulRecipesAmount;
 
     private void Awake()
     {
@@ -79,7 +81,8 @@ public class DeliveryManager : MonoBehaviour
                 if (plateMathcesRecipe) 
                 {
                     //Player delievered valid recipe
-                    Debug.Log("Player delivered the correct Recipe");
+                    //Debug.Log("Player delivered the correct Recipe");
+                    successfulRecipesAmount++;
                     waitingRecipeSOList.RemoveAt(i);
 
                     OnRecipeCompleted?.Invoke(this, EventArgs.Empty);
@@ -96,4 +99,5 @@ public class DeliveryManager : MonoBehaviour
 
     public List<RecipeSO> GetRecipeListSOs() { return waitingRecipeSOList; }
 
+    public int GetSuccefulRecipesAmount() { return successfulRecipesAmount; }
 }
