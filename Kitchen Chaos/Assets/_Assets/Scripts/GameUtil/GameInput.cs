@@ -6,12 +6,18 @@ using UnityEngine.Events;
 
 public class GameInput : MonoBehaviour
 {
+    public static GameInput instance { get; private set; }
+
     private NewControls inputActions;
     public event EventHandler OnInteractPeformed;
     public event EventHandler OnInteractAltPerformed;
+    public event EventHandler OnPauseAction;
 
     private void Awake()
     {
+        //Setup Instance
+        instance = this;
+
         //SetUp Controls
         inputActions = new NewControls();
         inputActions.Player.Enable();
@@ -19,6 +25,19 @@ public class GameInput : MonoBehaviour
         //Subscribe to Control Events
         inputActions.Player.Interact.performed += Interact_Performed;
         inputActions.Player.InteractAlt.performed += InteractAlt_performed;
+        inputActions.Player.Pause.performed += Pause_Performed;
+
+    }
+
+    private void OnDestroy()
+    {
+        //Unsubscribe from control Events
+        inputActions.Player.Interact.performed += Interact_Performed;
+        inputActions.Player.InteractAlt.performed += InteractAlt_performed;
+        inputActions.Player.Pause.performed += Pause_Performed;
+
+        //Dispose of controls
+        inputActions.Dispose();
     }
 
     private void InteractAlt_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
@@ -33,6 +52,11 @@ public class GameInput : MonoBehaviour
         //Not to be mistaken with the ? operator (aka Conditional/Ternary Operator).
         //Ex: int num = 10; String result = (number > 5) ? "Greater than 5" : "Less than or equal to 5"; (Output is the left part in this example)
         OnInteractPeformed?.Invoke(this,EventArgs.Empty);
+    }
+
+    private void Pause_Performed(UnityEngine.InputSystem.InputAction.CallbackContext obj) 
+    {
+        OnPauseAction?.Invoke(this, EventArgs.Empty);
     }
 
     public Vector2 GetMovementVectorNormalized() 

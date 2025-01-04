@@ -5,9 +5,12 @@ using UnityEngine;
 
 public class KitchenGameManager : MonoBehaviour
 {
+    #region Fields
     public static KitchenGameManager instance { get; private set; }
 
     public event EventHandler OnStateChanged;
+    public event EventHandler OnGamePaused, OnGameUnpaused;
+
 
     private enum GameState 
     {
@@ -22,12 +25,27 @@ public class KitchenGameManager : MonoBehaviour
     private float countDownToStartTimer = 3;
     private float gamePlayingTimer;
     private float gamePlayingMax = 10f;
+    private bool isGamePaused = false;
+    #endregion
 
+    #region Methods
     private void Awake()
     {
         instance = this; 
         state= GameState.WaitingToStart;
     }
+
+    private void Start()
+    {
+        GameInput.instance.OnPauseAction += GameInput_OnPauseAction;
+    }
+
+    private void GameInput_OnPauseAction(object sender, EventArgs e)
+    {
+        TogglePauseGame();
+    }
+
+
 
     private void Update()
     {
@@ -62,7 +80,25 @@ public class KitchenGameManager : MonoBehaviour
                 break;
         }
 
-        Debug.Log(state);
+        //Debug.Log(state);
+    }
+
+    /// <summary>
+    /// Pause Game
+    /// </summary>
+    public void TogglePauseGame()
+    {
+        isGamePaused = !isGamePaused;
+        if (isGamePaused)
+        {
+            Time.timeScale = 0f;
+            OnGamePaused?.Invoke(this, EventArgs.Empty);
+        }
+        else
+        {
+            Time.timeScale = 1f;
+            OnGameUnpaused?.Invoke(this, EventArgs.Empty);
+        }
     }
 
     public bool IsGamePLaying() 
@@ -77,4 +113,6 @@ public class KitchenGameManager : MonoBehaviour
     public bool IsGameOver() { return state == GameState.GameOver;  }
     public float GetCountdownStartTimer() { return countDownToStartTimer; }
     public float GetPlayingTimerNormalized() { return 1 - (gamePlayingTimer / gamePlayingMax); }
+
+    #endregion
 }
