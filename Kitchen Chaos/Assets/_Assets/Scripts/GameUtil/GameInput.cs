@@ -26,6 +26,9 @@ public class GameInput : MonoBehaviour
         Interact,
         Interact_Alternate,
         Pause,
+        GamePad_Interact,
+        GamePad_Interact_Alternate,
+        GamePad_Pause
     }
 
     private void Awake()
@@ -129,7 +132,13 @@ public class GameInput : MonoBehaviour
                 return inputActions.Player.InteractAlt.bindings[0].ToDisplayString();
             case Binding.Pause:
                 return inputActions.Player.Pause.bindings[0].ToDisplayString();
-                
+            case Binding.GamePad_Interact:
+                return inputActions.Player.Interact.bindings[1].ToDisplayString();
+            case Binding.GamePad_Interact_Alternate:
+                return inputActions.Player.InteractAlt.bindings[1].ToDisplayString();
+            case Binding.GamePad_Pause:
+                return inputActions.Player.Pause.bindings[1].ToDisplayString();
+
         }
     }
 
@@ -172,13 +181,28 @@ public class GameInput : MonoBehaviour
                 inputAction = inputActions.Player.Pause;
                 bindingIndex = 0;
                 break;
+            case Binding.GamePad_Interact:
+                inputAction = inputActions.Player.Interact;
+                bindingIndex = 1;
+                break;
+            case Binding.GamePad_Interact_Alternate:
+                inputAction = inputActions.Player.InteractAlt;
+                bindingIndex = 1;
+                break;
+            case Binding.GamePad_Pause:
+                inputAction = inputActions.Player.Pause;
+                bindingIndex = 1;
+                break;
         }
+
+        //Clear existing binding override for specified index
+        inputAction.ApplyBindingOverride(bindingIndex, string.Empty);
 
         //Rebind inputAction with InteractiveRebinding
         inputAction.PerformInteractiveRebinding(bindingIndex).OnComplete(callback => 
         {
-            Debug.Log(callback.action.bindings[1].path);
-            Debug.Log(callback.action.bindings[1].overridePath);
+            Debug.Log(callback.action.bindings[bindingIndex].path);
+            Debug.Log(callback.action.bindings[bindingIndex].overridePath);
             callback.Dispose();
             inputActions.Player.Enable();
             onActionRebound();

@@ -88,8 +88,8 @@ public class CuttingCounter : BaseCounter, IHasProgress
             }
 
             //Invoke Cutting Progress Event.
-            OnCut.Invoke(this, EventArgs.Empty);
-            OnAnyCut(this, EventArgs.Empty);
+            OnCut?.Invoke(this, EventArgs.Empty);
+            OnAnyCut?.Invoke(this, EventArgs.Empty);
             OnProgressChanged?.Invoke(this, new IHasProgress.OnProgressChangedEventArgs { progressNormalized = (float)cuttingProgress / cuttingRecipeSO.cuttingProgressMax });
         }
     }
