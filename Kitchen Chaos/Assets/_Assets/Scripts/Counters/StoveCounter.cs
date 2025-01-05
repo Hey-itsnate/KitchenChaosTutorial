@@ -38,8 +38,9 @@ public class StoveCounter : BaseCounter, IHasProgress
             switch (state)
             {
                 case StoveState.Idle:
+                    if (Testing) Debug.Log("Idle");
                     break;
-                    if(Testing) Debug.Log("Idle");
+                    
                 case StoveState.Frying:
                     //Frying kitchen Object
                     if (Testing) Debug.Log("Current State: Frying || Fry Time: " + fryingTimer);
@@ -175,5 +176,10 @@ public class StoveCounter : BaseCounter, IHasProgress
             }
         }
         return null;
+    }
+
+    public bool IsFried() 
+    {
+        return state == StoveState.Fried;
     }
 }

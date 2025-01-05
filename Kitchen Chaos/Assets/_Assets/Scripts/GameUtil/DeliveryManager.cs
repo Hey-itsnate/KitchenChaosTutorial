@@ -26,20 +26,23 @@ public class DeliveryManager : MonoBehaviour
 
     private void Update()
     {
-        spawnRecipeTimer -= Time.deltaTime;
-        if (spawnRecipeTimer <= 0f)
+        if (KitchenGameManager.instance.IsGamePLaying())
         {
-            //Recipte Timer Finisehd
-            spawnRecipeTimer = spawnRecipeTimerDuration;
-
-            if (waitingRecipeSOList.Count < waitingRecipesMax)
+            spawnRecipeTimer -= Time.deltaTime;
+            if (spawnRecipeTimer <= 0f)
             {
-                //Add New Recipe to waitingRecipeSO List
-                RecipeSO waitingRecipe = recipeListSO.RecipteSOList[UnityEngine.Random.Range(0, recipeListSO.RecipteSOList.Count)];
-                //Debug.Log("New Recipe: " + waitingRecipe.name);
-                waitingRecipeSOList.Add(waitingRecipe);
+                //Recipte Timer Finisehd
+                spawnRecipeTimer = spawnRecipeTimerDuration;
 
-                OnRecipeSpawned?.Invoke(this, EventArgs.Empty);
+                if (waitingRecipeSOList.Count < waitingRecipesMax)
+                {
+                    //Add New Recipe to waitingRecipeSO List
+                    RecipeSO waitingRecipe = recipeListSO.RecipteSOList[UnityEngine.Random.Range(0, recipeListSO.RecipteSOList.Count)];
+                    //Debug.Log("New Recipe: " + waitingRecipe.name);
+                    waitingRecipeSOList.Add(waitingRecipe);
+
+                    OnRecipeSpawned?.Invoke(this, EventArgs.Empty);
+                }
             }
         }
     }
